@@ -67,8 +67,7 @@ export const FooterWithSocialBlockComponent: React.FC<
         data: block[sectionType as keyof typeof block],
       };
       navigator.clipboard.writeText(JSON.stringify(sectionData, null, 2));
-      // Optional: Show a toast notification
-      alert("Section copied to clipboard!");
+      // No notification - just copy silently
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -185,26 +184,21 @@ export const FooterWithSocialBlockComponent: React.FC<
               })}
             </div>
             {selectedElement === "social" && (
-              <div className="flex gap-2 justify-center mt-3 pt-3 border-t border-orange-200">
-                <Button
-                  size="sm"
-                  className="h-8 px-3 text-xs bg-orange-100 text-orange-700 hover:bg-orange-200"
+              <div className="flex gap-1 justify-center mt-2 pt-2 border-t border-orange-200">
+                <button
                   onClick={(e) => handleCopySection("social", e)}
                   title="Copy section"
+                  className="p-1.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
                 >
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="h-8 px-3 text-xs"
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
                   onClick={(e) => handleDeleteSection("social", e)}
                   title="Delete section"
+                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             )}
           </div>
@@ -254,26 +248,21 @@ export const FooterWithSocialBlockComponent: React.FC<
               </h3>
             )}
             {selectedElement === "enterpriseName" && (
-              <div className="flex gap-2 justify-center mt-3 pt-3 border-t border-orange-200">
-                <Button
-                  size="sm"
-                  className="h-8 px-3 text-xs bg-orange-100 text-orange-700 hover:bg-orange-200"
+              <div className="flex gap-1 justify-center mt-2 pt-2 border-t border-orange-200">
+                <button
                   onClick={(e) => handleCopySection("enterpriseName", e)}
                   title="Copy section"
+                  className="p-1.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
                 >
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="h-8 px-3 text-xs"
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
                   onClick={(e) => handleDeleteSection("enterpriseName", e)}
                   title="Delete section"
+                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             )}
           </div>
@@ -324,26 +313,21 @@ export const FooterWithSocialBlockComponent: React.FC<
               </p>
             )}
             {selectedElement === "address" && (
-              <div className="flex gap-2 justify-center mt-3 pt-3 border-t border-orange-200">
-                <Button
-                  size="sm"
-                  className="h-8 px-3 text-xs bg-orange-100 text-orange-700 hover:bg-orange-200"
+              <div className="flex gap-1 justify-center mt-2 pt-2 border-t border-orange-200">
+                <button
                   onClick={(e) => handleCopySection("address", e)}
                   title="Copy section"
+                  className="p-1.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
                 >
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="h-8 px-3 text-xs"
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
                   onClick={(e) => handleDeleteSection("address", e)}
                   title="Delete section"
+                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             )}
           </div>
@@ -393,26 +377,21 @@ export const FooterWithSocialBlockComponent: React.FC<
               </p>
             )}
             {selectedElement === "subscriptionText" && (
-              <div className="flex gap-2 justify-center mt-3 pt-3 border-t border-orange-200">
-                <Button
-                  size="sm"
-                  className="h-8 px-3 text-xs bg-orange-100 text-orange-700 hover:bg-orange-200"
+              <div className="flex gap-1 justify-center mt-2 pt-2 border-t border-orange-200">
+                <button
                   onClick={(e) => handleCopySection("subscriptionText", e)}
                   title="Copy section"
+                  className="p-1.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
                 >
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="h-8 px-3 text-xs"
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
                   onClick={(e) => handleDeleteSection("subscriptionText", e)}
                   title="Delete section"
+                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             )}
           </div>
@@ -469,26 +448,21 @@ export const FooterWithSocialBlockComponent: React.FC<
               </a>
             )}
             {selectedElement === "unsubscribeLink" && (
-              <div className="flex gap-2 justify-center mt-3 pt-3 border-t border-orange-200">
-                <Button
-                  size="sm"
-                  className="h-8 px-3 text-xs bg-orange-100 text-orange-700 hover:bg-orange-200"
+              <div className="flex gap-1 justify-center mt-2 pt-2 border-t border-orange-200">
+                <button
                   onClick={(e) => handleCopySection("unsubscribeLink", e)}
                   title="Copy section"
+                  className="p-1.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
                 >
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="h-8 px-3 text-xs"
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
                   onClick={(e) => handleDeleteSection("unsubscribeLink", e)}
                   title="Delete section"
+                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             )}
           </div>
