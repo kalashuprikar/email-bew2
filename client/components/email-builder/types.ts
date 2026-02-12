@@ -115,6 +115,8 @@ export interface DynamicContentBlock {
   fieldName: string;
   placeholder: string;
   backgroundColor: string;
+  width?: number;
+  height?: number;
   padding: number;
   margin: number;
   borderWidth: number;
