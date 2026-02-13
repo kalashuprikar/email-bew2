@@ -26,7 +26,7 @@ export const LogoBlockComponent: React.FC<LogoBlockComponentProps> = ({
         verticalAlign: "top",
       }}
     >
-      <div style={{ textAlign: isInlineDisplay ? "left" : "center" }}>
+      <div style={{ textAlign: block.alignment === "center" ? "center" : block.alignment === "right" ? "right" : "left" }}>
         {block.src ? (
           <img
             src={block.src}
