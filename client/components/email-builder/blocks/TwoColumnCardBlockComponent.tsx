@@ -677,7 +677,7 @@ export const TwoColumnCardBlockComponent: React.FC<
 
                 {/* Button */}
                 {card.button ? (
-                  <div className="flex flex-col gap-2 pt-2">
+                  <div className="flex flex-col gap-2 mt-3 pt-2 border-t border-gray-200">
                     <button
                       style={{
                         backgroundColor: card.button.backgroundColor,
@@ -736,17 +736,15 @@ export const TwoColumnCardBlockComponent: React.FC<
                     )}
                   </div>
                 ) : (
-                  hoveredCardId === card.id && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full text-xs mt-2"
-                      onClick={() => handleAddButton(card.id)}
-                    >
-                      <Plus className="w-4 h-4 mr-1" />
-                      Add Button
-                    </Button>
-                  )
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full text-xs mt-3"
+                    onClick={() => handleAddButton(card.id)}
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Button
+                  </Button>
                 )}
               </div>
             </div>
