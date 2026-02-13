@@ -974,20 +974,26 @@ export const TwoColumnCardBlockComponent: React.FC<
                   </div>
                 )}
 
-                {/* Nested Blocks Drop Zone - Accept blocks for this card */}
-                <CardDropZone
-                  cardId={card.id}
-                  blocks={card.blocks || []}
-                  onAddBlock={(newBlock) =>
-                    handleAddBlockToCard(card.id, newBlock)
-                  }
-                  onDeleteBlock={(blockId) =>
-                    handleDeleteBlockFromCard(card.id, blockId)
-                  }
-                  onUpdateBlock={(updatedBlock) =>
-                    handleUpdateBlockInCard(card.id, updatedBlock)
-                  }
-                />
+                {/* Nested Blocks - Rendered inside card */}
+                {card.blocks && card.blocks.length > 0 && (
+                  <div className="space-y-3 mt-3 pt-2 border-t border-gray-200">
+                    {card.blocks.map((nestedBlock) => (
+                      <div key={nestedBlock.id} className="relative group">
+                        <BlockRenderer
+                          block={nestedBlock}
+                          isSelected={false}
+                          onBlockUpdate={(updatedBlock) => {
+                            handleUpdateBlockInCard(card.id, updatedBlock);
+                          }}
+                          onDelete={(blockId) => {
+                            handleDeleteBlockFromCard(card.id, blockId);
+                          }}
+                          blockIndex={0}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           );
