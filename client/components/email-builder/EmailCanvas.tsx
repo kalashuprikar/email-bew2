@@ -169,6 +169,12 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
                     currentIndex++;
                   }
 
+                  // Determine layout direction based on block types
+                  const hasNavigation = inlineBlocks.some(b => b.type === "navigation");
+                  const flexDirection = hasNavigation ? "column" : "row";
+                  const justifyContent = hasNavigation ? "center" : "space-between";
+                  const alignItems = hasNavigation ? "center" : "center";
+
                   const groupId = `inline-group-${block.id}`;
                   const isGroupSelected = selectedInlineGroup === groupId;
                   const isGroupHovered = hoveredInlineGroup === groupId;
@@ -190,13 +196,20 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
                       )}
                       style={{
                         display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        flexDirection: flexDirection,
+                        alignItems: alignItems,
+                        justifyContent: justifyContent,
                         gap: "0",
                       }}>
                         {inlineBlocks.map((inlineBlock, i) => (
-                          <div key={inlineBlock.id} className="inline-block" onClick={(e) => e.stopPropagation()}>
+                          <div
+                            key={inlineBlock.id}
+                            className={hasNavigation ? "w-full" : "inline-block"}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                              display: hasNavigation ? "block" : "inline-block"
+                            }}
+                          >
                             <DraggableBlock
                               block={inlineBlock}
                               index={index + i}
