@@ -206,6 +206,7 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
                         alignItems: alignItems,
                         justifyContent: justifyContent,
                         gap: "0",
+                        flexWrap: "nowrap",
                       }}>
                         {inlineBlocks.map((inlineBlock, i) => (
                           <div
@@ -213,7 +214,9 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
                             className={hasLeftRightAlignment ? "inline-block" : "w-full"}
                             onClick={(e) => e.stopPropagation()}
                             style={{
-                              display: hasLeftRightAlignment ? "inline-block" : "block"
+                              display: hasLeftRightAlignment ? "inline-block" : "block",
+                              verticalAlign: "middle",
+                              flexShrink: 0
                             }}
                           >
                             <DraggableBlock
