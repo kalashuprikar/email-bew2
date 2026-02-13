@@ -3,6 +3,7 @@ import { Copy, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FooterWithSocialBlock } from "../types";
 import { SocialBlockComponent } from "./SocialBlockComponent";
+import { toast } from "sonner";
 
 interface FooterWithSocialBlockComponentProps {
   block: FooterWithSocialBlock;
@@ -60,16 +61,29 @@ export const FooterWithSocialBlockComponent: React.FC<
   const handleCopySection = (sectionType: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      // Copy section data to clipboard as JSON
-      const sectionData: any = {
-        type: block.type,
-        sectionType,
-        data: block[sectionType as keyof typeof block],
-      };
-      navigator.clipboard.writeText(JSON.stringify(sectionData, null, 2));
-      // No notification - just copy silently
+      let textToCopy = "";
+
+      // Extract the actual content based on section type
+      if (sectionType === "social") {
+        textToCopy = block.social.platforms.map(p => p.name).join(", ");
+      } else if (sectionType === "enterpriseName") {
+        textToCopy = block.enterpriseName.content;
+      } else if (sectionType === "address") {
+        textToCopy = block.address.content;
+      } else if (sectionType === "subscriptionText") {
+        textToCopy = block.subscriptionText.content;
+      } else if (sectionType === "unsubscribeLink") {
+        textToCopy = block.unsubscribeLink.text;
+      }
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(textToCopy);
+
+      // Show success toast
+      toast.success("Copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy:", err);
+      toast.error("Failed to copy");
     }
   };
 
