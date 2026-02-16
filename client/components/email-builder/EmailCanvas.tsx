@@ -143,7 +143,7 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
             padding: `${template.padding}px`,
           }}
           className={cn(
-            "bg-white border border-t-0 border-gray-200 rounded-b-lg shadow-sm min-h-96 transition-all overflow-y-auto",
+            "bg-white border border-t-0 border-gray-200 rounded-b-lg shadow-sm min-h-96 transition-all overflow-y-auto p-6",
             isOver && "ring-2 ring-valasys-orange bg-orange-50",
           )}
           onClick={(e) => {
@@ -154,7 +154,7 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
           }}
         >
           {/* Section-based rendering */}
-          {template.useSections && template.sections && template.sections.length > 0 ? (
+          {Array.isArray(template.sections) && template.sections.length > 0 ? (
             <SectionsRenderer
               template={template}
               selectedBlockId={selectedBlockId}

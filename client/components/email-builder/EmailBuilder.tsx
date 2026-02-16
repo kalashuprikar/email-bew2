@@ -56,13 +56,24 @@ export const EmailBuilder: React.FC<EmailBuilderProps> = ({
   onBack,
 }) => {
   const [template, setTemplate] = useState<EmailTemplate>(() => {
+    let tmpl: EmailTemplate;
+
     if (templateId) {
       const existing = getTemplatesFromLocalStorage().find(
         (t) => t.id === templateId,
       );
-      return existing || createEmptyTemplate();
+      tmpl = existing || createEmptyTemplate();
+    } else {
+      tmpl = createEmptyTemplate();
     }
-    return createEmptyTemplate();
+
+    // Ensure template has sections
+    if (!Array.isArray(tmpl.sections) || tmpl.sections.length === 0) {
+      tmpl.sections = [createEmptySection("Main Section")];
+      tmpl.useSections = true;
+    }
+
+    return tmpl;
   });
 
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);

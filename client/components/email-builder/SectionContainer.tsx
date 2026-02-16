@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import { cn } from "@/lib/utils";
 import { EmailSection, ContentBlock } from "./types";
 import { DraggableBlock } from "./DraggableBlock";
 import { SectionDropZone } from "./SectionDropZone";
-import { GripVertical, Trash2, Copy, Settings, ChevronDown } from "lucide-react";
+import { ChevronDown, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface SectionContainerProps {
   section: EmailSection;
-  sectionIndex: number;
   selectedBlockId: string | null;
   editingBlockId: string | null;
   selectedFooterElement?: string | null;
@@ -27,7 +25,6 @@ interface SectionContainerProps {
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
   section,
-  sectionIndex,
   selectedBlockId,
   editingBlockId,
   selectedFooterElement,
@@ -43,121 +40,57 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   onSectionUpdate,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [isHovering, setIsHovering] = useState(false);
-
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: "section",
-      item: () => ({ sectionId: section.id, sectionIndex }),
-      collect: (monitor) => ({
-        isDragging: !!monitor.isDragging(),
-      }),
-    }),
-    [section.id, sectionIndex],
-  );
-
-  const [{ isOver }, drop] = useDrop(
-    () => ({
-      accept: "section",
-      hover: (item: any) => {
-        // Can add section reordering here if needed
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-      }),
-    }),
-    [],
-  );
-
-  const sectionRef = React.useRef<HTMLDivElement>(null);
-  drop(sectionRef);
 
   return (
-    <div
-      ref={sectionRef}
-      className={cn(
-        "bg-white border border-gray-200 rounded-lg overflow-hidden transition-all",
-        isDragging && "opacity-50",
-        isOver && "ring-2 ring-valasys-orange",
-        isHovering && "shadow-md",
-      )}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {/* Section Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
-        <div className="flex items-center gap-3">
-          <button
-            ref={drag}
-            className="p-1 text-gray-400 hover:text-gray-600 cursor-move"
-            title="Drag to reorder section"
-          >
-            <GripVertical className="w-4 h-4" />
-          </button>
+      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-1 text-gray-600 hover:bg-white rounded transition-colors"
-            title={isExpanded ? "Collapse section" : "Expand section"}
+            className="p-1 hover:bg-white rounded"
           >
             <ChevronDown
               className={cn("w-4 h-4 transition-transform", !isExpanded && "-rotate-90")}
             />
           </button>
-          <div>
-            <h3 className="font-medium text-gray-900 text-sm">{section.name || "Section"}</h3>
-            <p className="text-xs text-gray-500">{section.blocks.length} block(s)</p>
-          </div>
+          <h3 className="font-medium text-sm">{section.name || "Section"}</h3>
+          <span className="text-xs text-gray-500">({section.blocks.length})</span>
         </div>
-
-        {isHovering && (
-          <div className="flex gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 hover:bg-gray-200"
-              title="Section settings"
-            >
-              <Settings className="w-4 h-4 text-gray-600" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 hover:bg-red-50"
-              onClick={() => onDeleteSection(section.id)}
-              title="Delete section"
-            >
-              <Trash2 className="w-4 h-4 text-red-600" />
-            </Button>
-          </div>
-        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 hover:bg-red-50"
+          onClick={() => onDeleteSection(section.id)}
+        >
+          <Trash2 className="w-4 h-4 text-red-600" />
+        </Button>
       </div>
 
       {/* Section Content */}
       {isExpanded && (
-        <div className="p-4 space-y-3">
+        <div className="p-4">
           {section.blocks.length === 0 ? (
             <SectionDropZone
               sectionId={section.id}
+              position={0}
               onBlockDrop={onBlockDrop}
-              showPlaceholder={true}
+              isEmpty={true}
             />
           ) : (
-            <>
-              {section.blocks.map((block, blockIndex) => (
-                <div key={block.id}>
-                  {/* Drop zone before block */}
-                  <SectionDropZone
-                    sectionId={section.id}
-                    blockIndex={blockIndex}
-                    onBlockDrop={onBlockDrop}
-                    showPlaceholder={false}
-                    className="h-1 mb-2"
-                  />
+            <div className="space-y-2">
+              <SectionDropZone
+                sectionId={section.id}
+                position={0}
+                onBlockDrop={onBlockDrop}
+                isEmpty={false}
+              />
 
-                  {/* Block */}
+              {section.blocks.map((block, index) => (
+                <React.Fragment key={block.id}>
                   <DraggableBlock
                     block={block}
-                    index={blockIndex}
+                    index={index}
                     totalBlocks={section.blocks.length}
                     isSelected={selectedBlockId === block.id}
                     isEditing={editingBlockId === block.id}
@@ -177,18 +110,16 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
                     }
                     onDelete={(blockId) => onDeleteBlock(blockId, section.id)}
                   />
-                </div>
-              ))}
 
-              {/* Drop zone after last block */}
-              <SectionDropZone
-                sectionId={section.id}
-                blockIndex={section.blocks.length}
-                onBlockDrop={onBlockDrop}
-                showPlaceholder={false}
-                className="h-1 mt-2"
-              />
-            </>
+                  <SectionDropZone
+                    sectionId={section.id}
+                    position={index + 1}
+                    onBlockDrop={onBlockDrop}
+                    isEmpty={false}
+                  />
+                </React.Fragment>
+              ))}
+            </div>
           )}
         </div>
       )}

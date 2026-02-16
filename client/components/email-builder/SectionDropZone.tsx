@@ -6,72 +6,53 @@ import { Plus } from "lucide-react";
 
 interface SectionDropZoneProps {
   sectionId: string;
-  blockIndex?: number;
+  position?: number;
   onBlockDrop: (block: ContentBlock, sectionId: string, position?: number) => void;
-  isOver?: boolean;
-  children?: React.ReactNode;
-  className?: string;
-  showPlaceholder?: boolean;
+  isEmpty?: boolean;
 }
 
 export const SectionDropZone: React.FC<SectionDropZoneProps> = ({
   sectionId,
-  blockIndex,
+  position,
   onBlockDrop,
-  children,
-  className,
-  showPlaceholder = true,
+  isEmpty = false,
 }) => {
-  const [{ isOver, canDrop }, drop] = useDrop(
-    () => ({
-      accept: ["block"],
-      drop: (item: any, monitor) => {
-        // Handle block drop from BlocksPanel
-        if (item.block) {
-          onBlockDrop(item.block, sectionId, blockIndex);
-          // Return something to indicate the drop was handled
-          return { handled: true };
-        }
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver({ shallow: true }),
-        canDrop: !!monitor.canDrop(),
-      }),
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "block",
+    drop: (item: any) => {
+      if (item.block) {
+        onBlockDrop(item.block, sectionId, position);
+      }
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
     }),
-    [sectionId, blockIndex, onBlockDrop],
-  );
+  }));
+
+  if (isEmpty) {
+    return (
+      <div
+        ref={drop}
+        className={cn(
+          "w-full min-h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center transition-all",
+          isOver && "border-valasys-orange bg-orange-50"
+        )}
+      >
+        <div className="text-center text-gray-400">
+          <Plus className="w-6 h-6 mx-auto mb-2" />
+          <p className="text-sm font-medium">Drop blocks here</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       ref={drop}
       className={cn(
-        "relative transition-all",
-        isOver && canDrop && "ring-2 ring-valasys-orange bg-orange-50",
-        className,
+        "h-1 w-full my-2 transition-all cursor-default",
+        isOver ? "h-3 bg-valasys-orange rounded" : "bg-gray-200"
       )}
-    >
-      {showPlaceholder && !children && isOver && canDrop && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="flex flex-col items-center gap-2 text-valasys-orange">
-            <Plus className="w-6 h-6" />
-            <span className="text-sm font-medium">Drop block here</span>
-          </div>
-        </div>
-      )}
-
-      {children ? (
-        children
-      ) : (
-        <div className={cn(
-          "min-h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center transition-colors",
-          isOver && canDrop && "border-valasys-orange bg-orange-50",
-        )}>
-          <div className="text-center text-gray-400">
-            <Plus className="w-6 h-6 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Drop a block here</p>
-          </div>
-        </div>
-      )}
-    </div>
+    />
   );
 };

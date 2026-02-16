@@ -1,7 +1,6 @@
 import React from "react";
 import { EmailTemplate, ContentBlock, EmailSection } from "./types";
 import { SectionContainer } from "./SectionContainer";
-import { SectionDropZone } from "./SectionDropZone";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -42,17 +41,12 @@ export const SectionsRenderer: React.FC<SectionsRendererProps> = ({
 }) => {
   const sections = template.sections || [];
 
-  if (!template.useSections || sections.length === 0) {
-    return null;
-  }
-
   return (
     <div className="space-y-4">
-      {sections.map((section, sectionIndex) => (
+      {sections.map((section) => (
         <SectionContainer
           key={section.id}
           section={section}
-          sectionIndex={sectionIndex}
           selectedBlockId={selectedBlockId}
           editingBlockId={editingBlockId}
           selectedFooterElement={selectedFooterElement}
@@ -69,17 +63,14 @@ export const SectionsRenderer: React.FC<SectionsRendererProps> = ({
         />
       ))}
 
-      {/* Add new section button */}
-      <div className="pt-4 border-t border-gray-200">
-        <Button
-          onClick={onAddSection}
-          variant="outline"
-          className="w-full gap-2 text-valasys-orange hover:text-valasys-orange"
-        >
-          <Plus className="w-4 h-4" />
-          Add Section
-        </Button>
-      </div>
+      <Button
+        onClick={onAddSection}
+        variant="outline"
+        className="w-full gap-2"
+      >
+        <Plus className="w-4 h-4" />
+        Add Section
+      </Button>
     </div>
   );
 };
