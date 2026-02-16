@@ -36,21 +36,19 @@ export const EditableLink: React.FC<EditableLinkProps> = ({
 
   if (isEditing) {
     return (
-      <div className="flex items-center gap-2 px-3 py-2 border border-valasys-orange rounded-full bg-white z-50">
-        <Input
-          placeholder="Text"
-          value={editLabel}
-          onChange={(e) => setEditLabel(e.target.value)}
-          onBlur={handleSave}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleSave();
-            if (e.key === 'Escape') handleCancel();
-          }}
-          size="sm"
-          className="text-xs h-6 border-0 focus:ring-0 px-0"
-          autoFocus
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Text"
+        value={editLabel}
+        onChange={(e) => setEditLabel(e.target.value)}
+        onBlur={handleSave}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') handleSave();
+          if (e.key === 'Escape') handleCancel();
+        }}
+        className="text-xs px-3 py-2 border border-valasys-orange rounded-full bg-white focus:outline-none focus:border-valasys-orange w-32 z-50"
+        autoFocus
+      />
     );
   }
 
