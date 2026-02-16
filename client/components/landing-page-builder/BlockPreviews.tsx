@@ -85,9 +85,38 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
           )}
         </div>
 
-        {/* CTA Button and Hamburger Menu - Always visible */}
-        <div className="flex items-center gap-2">
+        {/* Desktop Navigation (hidden on mobile) */}
+        <div className="hidden md:flex gap-4 text-sm text-gray-600 items-center">
+          {props.navigationLinks?.map((link: any, i: number) => (
+            <div
+              key={i}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedNavLinkIndex(i);
+                onLinkSelect?.(i, "navigation");
+              }}
+              onMouseEnter={() => setHoveredLinkIndex(i)}
+              onMouseLeave={() => setHoveredLinkIndex(null)}
+              className="hover:text-gray-900 cursor-pointer transition-all"
+            >
+              <EditableLink
+                label={link.label}
+                href={link.href}
+                onUpdate={(label, href) => handleLinkUpdate(i, label, href)}
+                inline={true}
+                isSelected={selectedNavLinkIndex === i}
+                isHovered={hoveredLinkIndex === i}
+              />
+            </div>
+          ))}
           <button className="px-4 py-2 bg-valasys-orange text-white text-sm font-medium rounded hover:bg-orange-600 transition-colors whitespace-nowrap">
+            {props.ctaButtonText}
+          </button>
+        </div>
+
+        {/* Mobile Hamburger Menu (visible only on mobile) */}
+        <div className="md:hidden flex items-center gap-2">
+          <button className="px-3 py-2 bg-valasys-orange text-white text-xs font-medium rounded hover:bg-orange-600 transition-colors whitespace-nowrap">
             {props.ctaButtonText}
           </button>
           <button
@@ -95,7 +124,7 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
               e.stopPropagation();
               setIsMenuOpen(!isMenuOpen);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition-colors md:hidden"
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
             title="Menu"
           >
             {isMenuOpen ? (
