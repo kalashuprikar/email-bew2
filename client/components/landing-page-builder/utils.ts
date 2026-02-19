@@ -110,17 +110,18 @@ export const createTestimonialsBlock = (): LandingPageBlock => ({
   },
 });
 
-export const createContentImageBlock = (): LandingPageBlock => ({
-  id: `content-image-${Date.now()}`,
+export const createContentImageBlock = (imagePosition: "left" | "right" = "left"): LandingPageBlock => ({
+  id: `content-image-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
   type: "content-image",
   properties: {
     title: "Some title here",
     description: "From 25€\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy eirmod tempor incididunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-    imageUrl: "https://via.placeholder.com/300x250?text=Product+Image",
+    imageUrl: "https://cdn.builder.io/api/v1/image/assets%2F7504e7df7fdc4c1bbdbf1a1b4a018259%2Fd7633832d483478e904f767e88a5ad5a?format=webp&width=800&height=1200",
     buttonText: "Call to action",
     buttonLink: "#",
-    imagePosition: "left", // "left" or "right"
+    imagePosition, // "left" or "right"
     backgroundColor: "#ffffff",
+    buttonColor: "#FF6A00",
   },
 });
 
@@ -559,6 +560,8 @@ export const createNewLandingPage = (
   blocks: [
     createHeaderBlock(),
     createHeroBlock(),
+    createContentImageBlock("left"),
+    createContentImageBlock("right"),
     createFeaturesBlock(),
     createTestimonialsBlock(),
     createAboutBlock(),
