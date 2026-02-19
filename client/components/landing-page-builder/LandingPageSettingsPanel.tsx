@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { LandingPageBlock } from "./types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Trash2, Copy } from "lucide-react";
+import { Trash2, Copy, Upload } from "lucide-react";
 import { EditableLink } from "./EditableLink";
 
 interface LandingPageSettingsPanelProps {
@@ -50,6 +50,20 @@ export const LandingPageSettingsPanel: React.FC<
       setButtonHeightUnit(String(block.properties?.ctaButtonHeight || "auto").includes("%") ? "%" : "px");
     }
   }, [block?.id]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        updateProperty("backgroundImage", dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const updateProperty = (key: string, value: any) => {
     const updated = { ...localProps, [key]: value };
@@ -1038,16 +1052,35 @@ export const LandingPageSettingsPanel: React.FC<
       </div>
 
       <div>
-        <Label className="text-sm font-medium">Background Image URL</Label>
-        <Input
-          value={localProps.backgroundImage || ""}
-          onChange={(e) => updateProperty("backgroundImage", e.target.value)}
-          placeholder="https://example.com/image.jpg"
-        />
+        <Label className="text-sm font-medium">Background Image</Label>
+        <div className="flex gap-2 mb-2">
+          <Input
+            value={localProps.backgroundImage || ""}
+            onChange={(e) => updateProperty("backgroundImage", e.target.value)}
+            placeholder="https://example.com/image.jpg"
+            className="flex-1"
+          />
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap gap-1"
+          >
+            <Upload className="w-4 h-4" />
+            Upload
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+        </div>
         {localProps.backgroundImage && (
           <div className="mt-2 text-xs text-gray-600">
             <div
-              className="w-full h-20 rounded border border-gray-300 bg-cover bg-center mt-1"
+              className="w-full h-20 rounded border border-gray-300 bg-cover bg-center"
               style={{ backgroundImage: `url(${localProps.backgroundImage})` }}
             />
           </div>
