@@ -323,6 +323,7 @@ export const HeroBlockPreview: React.FC<BlockPreviewProps> = ({
             style={{
               width: props.headlineWidth ?? "100%",
               height: props.headlineHeight ?? "auto",
+              textAlign: (props.headlineAlign || "center") as any,
             }}
             autoFocus
             onFocus={(e) => {
@@ -337,6 +338,7 @@ export const HeroBlockPreview: React.FC<BlockPreviewProps> = ({
               wordBreak: "break-word",
               width: props.headlineWidth ?? "100%",
               height: props.headlineHeight ?? "auto",
+              textAlign: (props.headlineAlign || "center") as any,
             }}
             onDoubleClick={(e) => {
               e.stopPropagation();
@@ -415,6 +417,7 @@ export const HeroBlockPreview: React.FC<BlockPreviewProps> = ({
             style={{
               width: props.subheadingWidth ?? "100%",
               height: props.subheadingHeight ?? "auto",
+              textAlign: (props.subheadingAlign || "center") as any,
             }}
             autoFocus
             onFocus={(e) => {
@@ -429,6 +432,7 @@ export const HeroBlockPreview: React.FC<BlockPreviewProps> = ({
               wordBreak: "break-word",
               width: props.subheadingWidth ?? "100%",
               height: props.subheadingHeight ?? "auto",
+              textAlign: (props.subheadingAlign || "center") as any,
             }}
             onDoubleClick={(e) => {
               e.stopPropagation();
@@ -480,6 +484,9 @@ export const HeroBlockPreview: React.FC<BlockPreviewProps> = ({
           selectedElement === "button" ? "border-2 border-solid border-valasys-orange" :
           hoveredElement === "button" ? "border-2 border-dashed border-valasys-orange" : ""
         }`}
+        style={{
+          textAlign: (props.ctaButtonAlign || "center") as any,
+        }}
         onMouseEnter={() => !isEditingButton && setHoveredElement("button")}
         onMouseLeave={() => setHoveredElement(null)}
         onClick={(e) => {
